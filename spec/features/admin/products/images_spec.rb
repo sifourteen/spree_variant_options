@@ -5,13 +5,6 @@ describe 'Product Images', js: true do
 
   let(:file_path) { Rails.root + '../../spec/fixtures/thinking-cat.jpg' }
 
-  before do
-    # Ensure attachment style keys are symbolized before running all tests
-    # Otherwise this would result in this error:
-    # undefined method `processors' for \"48x48>\
-    Spree::Image.attachment_definitions[:attachment][:styles].symbolize_keys!
-  end
-
   context 'product has variants' do
     let!(:product) { create(:product) }
     let!(:variant) { create(:variant, product: product) }
