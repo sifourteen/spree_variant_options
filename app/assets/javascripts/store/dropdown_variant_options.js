@@ -95,7 +95,7 @@ function DropdownVariantOptions(params) {
         update_options(1);
 
         // Initialize chosen.
-        $(".chosen-select").chosen({disable_search_threshold: 20, width: "30%"});
+        $(".chosen-select").chosen({disable_search_threshold: 20, width: "60%"});
     }
 
     function disable(option) {
