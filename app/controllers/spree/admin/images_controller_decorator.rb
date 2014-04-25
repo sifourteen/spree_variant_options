@@ -1,9 +1,13 @@
 Spree::Admin::ImagesController.class_eval do
-  alias_method :super_load_data, :load_data
 
   # Called in a before_filter
   def load_data
-    super_load_data
+    # Replace the call to super with a direct implementation of spree_backend's load_data method.
+    @product = Spree::Product.find_by_permalink(params[:product_id])
+    @variants = @product.variants.collect do |variant|
+      [variant.sku_and_options_text, variant.id]
+    end
+    @variants.insert(0, [Spree.t(:all), @product.master.id])
 
     @grouped_option_values ||= @product.option_values.group_by(&:option_type)
     @grouped_option_values.sort_by { |option_type, option_values| option_type.position }
