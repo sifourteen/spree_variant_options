@@ -19,12 +19,21 @@ Spree::Admin::ImagesController.class_eval do
 
     if viewable_id.is_a?(Hash)
       @product.errors.add(:attachment, 'Erro')
-      option_values_array = viewable_id.map {|option_type, option_values| option_values.map(&:to_i) }
-      option_values_combinations = option_values_array.shift
-      option_values_array.each do |option_value|
-        option_values_combinations = option_values_combinations.product(option_value)
+      if viewable_id.keys.length > 1
+        # For multiple options, take all the products then flatten them out.
+        option_values_array = viewable_id.map {|option_type, option_values| option_values.map(&:to_i) }
+        option_values_combinations = option_values_array.shift
+        option_values_array.each do |option_value|
+          option_values_combinations = option_values_combinations.product(option_value)
+        end
+        option_values_combinations = option_values_combinations.map(&:flatten) if option_values_combinations.count > 1
+      else
+        # If there's only one option, just make an array where each option is the only element of the array.
+        option_values_combinations = Array.new
+        viewable_id.values[0].each do |option_value|
+          option_values_combinations << Array.new(1, option_value.to_i)
+        end
       end
-      option_values_combinations = option_values_combinations.map(&:flatten) if option_values_combinations.count > 1
 
       @product.variants.each do |variant|
         option_values_combinations.each do |ov_combination|
