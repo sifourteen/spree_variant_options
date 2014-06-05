@@ -25,7 +25,7 @@
       <% index += 1 %>
     <% end %>
 
-    <%= hidden_field_tag "products[#{@product.id}]", "", :id => "variant_id", :class => "hidden" %>
+    <%= hidden_field_tag "variant_id", :id => "products[#{@product.id}]", :class => "hidden" %>
     <script type="text/javascript">
     //<![CDATA[
       var variant_options = new VariantOptions({
