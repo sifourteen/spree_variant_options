@@ -20,10 +20,10 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
 
   # Runtime
-  s.add_dependency('spree_core', '~> 2.1')
-  s.add_dependency('spree_api', '~> 2.1')
-  s.add_dependency('spree_frontend', '~> 2.1')
-  s.add_dependency('spree_backend',  '~> 2.1')
+  s.add_dependency('spree_core', '~> 3.0')
+  s.add_dependency('spree_api', '~> 3.0')
+  s.add_dependency('spree_frontend', '~> 3.0')
+  s.add_dependency('spree_backend',  '~> 3.0')
 
   # Development
   s.add_development_dependency('spree_sample',     '~> 2.1')
