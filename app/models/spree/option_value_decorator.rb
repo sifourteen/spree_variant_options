@@ -1,7 +1,7 @@
 Spree::OptionValue.class_eval do
 
   has_attached_file :image,
-    :styles        => ActiveSupport::JSON.decode(Spree::Config[:attachment_styles]).symbolize_keys!,
+    :styles        => ActiveSupport::JSON.decode(Paperclip::Attachment.default_options).symbolize_keys!,
     :default_style => SpreeVariantOptions::VariantConfig[:option_value_default_style],
     :url           => SpreeVariantOptions::VariantConfig[:option_value_url],
     :path          => SpreeVariantOptions::VariantConfig[:option_value_path]
