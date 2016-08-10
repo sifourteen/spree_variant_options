@@ -1,9 +1,9 @@
 Spree::Admin::ImagesController.class_eval do
-  alias_method :super_load_data, :load_data
+  alias_method :super_load_edit_data, :load_edit_data
 
   # Called in a before_filter
-  def load_data
-    super_load_data
+  def load_edit_data
+    super_load_edit_data
 
     @grouped_option_values ||= @product.option_values.group_by(&:option_type)
     @grouped_option_values.sort_by { |option_type, option_values| option_type.position }
