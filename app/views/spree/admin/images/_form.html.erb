@@ -1,78 +1,52 @@
-<div data-hook="admin_image_form_fields">
-  <div class="four columns alpha">
-    <div data-hook="file" class="field">
-      <%= f.label Spree.t(:filename) %><br>
+<div id="admin-image-form-fields-error" class="alert alert-danger alert-auto-hide hidden"><%= Spree.t(:select_a_variant_option) %></div>
+<div id="admin-image-form-fields" class="row" data-hook="admin_image_form_fields">
+  <div class="field-group col-md-4 text-center">
+    <div data-hook="file" class="field field-file-upload">
+      <label><%= Spree.t(:image) %></label>
+      <label class="image-upload-decoy btn btn-primary btn-success" for="image_attachment"><span class="icon icon-upload"></span><%= Spree.t(:choose_a_file) %></label>
       <%= f.file_field :attachment %>
     </div>
-
-    <%= content_tag :div, '', id: 'error-message' , data: { one_option_error: Spree.t(:one_option_per_type_must_be_selected) } %>
+  </div>
+  <div class="field-group col-md-4">
     <% if @grouped_option_values.empty? %>
-      <div data-hook="variant" class="field">
-        <%= f.label Spree::Variant.model_name.human %><br>
-        <%= f.select :viewable_id, @variants, {}, {:class => 'select2 fullwidth'} %>
+      <div data-hook="variant" class="field field-options">
+        <%= f.label Spree::Variant.model_name.human %><br/>
+        <%= f.select :viewable_id, @variants, {}, {:class => 'select2 form-control'} %>
       </div>
     <% else %>
       <div data-hook="variant" class="field">
-        <%= f.label I18n.t(:other, scope: 'activerecord.models.spree/variant') %><br>
+        <%= f.label I18n.t(:other, scope: 'activerecord.models.spree/variant') %><br/>
 
         <%# Master variant associates an image for all option_values and option_types combinations  %>
-        <%= check_box_tag "master_option", @product.master.id, false, :id => "master_option" %>
-        <%= label_tag "master_option", Spree.t(:all) %>
-        <ul></ul>
+        <div class="option-type-field">
+          <%= radio_button_tag "master_option", @product.master.id, false, :id => "master-option"%>
+          <%= label_tag "master_option", Spree.t(:all), :class => "option-type-label" %>
+        </div>
 
         <% @grouped_option_values.each do |option_type, option_values| %>
           <div class="option-type-field">
-            <%= check_box_tag "option_types[]", option_type.id, (params[:option_types] || []).include?(option_type.id.to_s), :id => "option_type_#{option_type.id}", :class => "option-type" %>
-            <%= label_tag "option_type_#{option_type.id}", option_type.presentation %>
+            <%= radio_button_tag "option_types[]", option_type.id, (params[:option_types] || []).include?(option_type.id.to_s), :id => "option_type_#{option_type.id}", :class => "option-type" %>
+            <%= label_tag "option_type_#{option_type.id}", option_type.presentation, :class => "option-type-label"%>
 
             <ul class="option-type-values">
               <% option_values.each_with_index do |option_value, index| %>
                 <li>
-                  <%= check_box_tag "image[viewable_id][#{option_type.id}][]", option_value.id, false, class: 'option-value', id: "#{option_value.id}_#{index}" %>
+                  <%= radio_button_tag "image[viewable_id][#{option_type.id}][]", option_value.id, false, class: 'option-value', id: "#{option_value.id}_#{index}" %>
                   <%= label_tag "image[viewable_id][#{option_type.id}][#{option_type.id}]", option_value.presentation, for: "#{option_value.id}_#{index}" %>
                 </li>
               <% end %>
             </ul>
           </div>
-          <br>
         <% end %>
       </div>
     <% end %>
-
   </div>
-
-
-  <div data-hook="alt_text" class="field omega five columns">
-    <%= f.label Spree.t(:alt_text) %><br>
-    <%= f.text_area :alt, :rows => 4, :class => 'fullwidth' %>
+  <div class="field-group col-md-4">
+    <div data-hook="alt_text" class="field field-alt-text">
+      <%= f.label Spree.t(:alt_text) %><br/>
+      <%= f.text_area :alt, :rows => 4, :class => 'form-control' %>
+    </div>
   </div>
 </div>
 
 <div class="clear"></div>
-
-
-
-
-
-
-
-
-<script type="text/javascript">
-//<![CDATA[
-  (function($){
-
-    $("input.option-type").change(function() {
-      $(this).parents(".option-type-field").find("input.option-value").attr("checked", this.checked);
-    });
-
-    $("input.option-value").change(function() {
-      var any_checked = false;
-      $(this).parents(".option-type-values").find("input.option-value").each(function(i, el) {
-        any_checked = any_checked || el.checked;
-      });
-      $(this).parents(".option-type-field").find("input.option-type").attr("checked", any_checked);
-    });
-
-  })(jQuery);
-  //]]>
-  </script>

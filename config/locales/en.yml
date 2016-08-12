@@ -5,4 +5,4 @@ en:
     detach_image: Detach Image
     select_a: "%{name}: "
     variant_options_select: Select an option
-    one_option_per_type_must_be_selected: One option per type must be selected
+    select_a_variant_optio: Select a variant option

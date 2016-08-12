@@ -2,10 +2,49 @@
  *= require spree/backend
 */
 
-#images .field ul li {
-  display: block !important;
+#admin-image-form-fields .field-file-upload {
+	position: relative;
 }
 
-#images #error-message {
-  color: #c00000;
+#admin-image-form-fields .field-file-upload label.image-upload-decoy {
+	display: inline-block;
+	margin-top: 6px;
+  text-transform: none;
+}
+
+#admin-image-form-fields .field-file-upload input {
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+}
+
+#admin-image-form-fields .option-type-field {
+	text-align: left;
+}
+
+#admin-image-form-fields ul {
+	list-style-type: none;
+}
+
+#admin-image-form-fields .option-type-label {
+	font-weight: 700;
+	color: #478DC1;
+}
+
+.new_image .field,
+.edit_image .field {
+	margin-bottom: 16px;
+}
+
+.new_image label,
+.edit_image label {
+	margin-right: 16px;
+}
+
+.new_image .text-center,
+.edit_image .text-center {
+	text-align: left;
 }
