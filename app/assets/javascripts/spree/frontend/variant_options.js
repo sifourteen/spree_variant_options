@@ -65,7 +65,8 @@ VariantOptions.prototype.init = function() {
   this.$options.on('click', this.onClickOption.bind(this));
   this.$clearOptions.on('click', this.onClickClear.bind(this));
 
-  this.$thumbs = $('.vtmb');
+  this.$thumbList = $('#product-thumbnails');
+  this.$thumbs = this.$thumbList.find('.vtmb, .tmb-all');
 
   this.reset();
 
@@ -78,8 +79,10 @@ VariantOptions.prototype.init = function() {
 
 VariantOptions.prototype.reset = function() {
   this.selection = [];
-  this.processRow(0);
-  this.updatePrice();
+  this
+    .processRow(0)
+    .updatePrice()
+    .showVariantImages();
 
 }
 
@@ -177,6 +180,7 @@ VariantOptions.prototype.updateSelection = function($option) {
 
   this
     .updatePrice($.filterByKeys(this.selection, variantGroup))
+    .showVariantImages(this.selection)
     .processRow(index + 1);
 
   return this;
@@ -300,11 +304,20 @@ VariantOptions.prototype.getCommonVariants = function(variantGroup) {
 }
 
 VariantOptions.prototype.showVariantImages = function(variantIds) {
+  var $thumb;
+
   if(typeof variantIds === 'number') {
     variantIds = [variantIds];
   }
 
+  this.$thumbList
+    .children()
+    .removeClass('selected');
+
   if(!variantIds) {
+    $thumb = this.$thumbs.first(),
+    $mainImage = $('#main-image');
+
     this.$thumbs.removeClass('hidden');
   }
   else {
@@ -312,37 +325,44 @@ VariantOptions.prototype.showVariantImages = function(variantIds) {
 
     for(var i = 0; i < variantIds.length; i++) {
       var id = variantIds[i],
-          $currentThumb = this.$thumbs.filter('.selected'),
-          $mainImage = $('#main-image');
+          $currentThumb = this.$thumbs.filter('.selected');
 
-      $('.tmb-' + id).removeClass('hidden');
+      this.$thumbs
+        .filter('.tmb-all, .tmb-' + id)
+        .removeClass('hidden');
 
       // if currently selected thumb does not belong to current variant, nor to common images,
       // hide it and select the first available thumb instead.
-      if(!$currentThumb.hasClass('vtmb-' + id)) {
-        var $thumb = $('.thumbnails .vtmb-' + id + ':first');
+      if(!$currentThumb.hasClass('tmb-' + id)) {
+        var $thumb = this.$thumbs.filter('.vtmb-' + id + ':first');
         
         if(!$thumb.length) {
-          $thumb = $('.thumbnails .vtmb:visible');
+          if(this.$thumbList.children().not('.hidden').length > 1) {
+            $thumb = this.$thumbs.filter('.vtmb:visible:first');
+          }
+          else {
+            $thumb = this.$thumbs.first();
+          }
         }
-
-        var newImg = $thumb.find('a').attr('href');
-
-        $('.thumbnails')
-          .children()
-          .removeClass('selected');
-        
-        $thumb.addClass('selected');
-        
-        $mainImage
-          .find('img')
-          .attr('src', newImg);
-
-        $mainImage.data('selectedThumb', newImg);
-        $mainImage.data('selectedThumbId', thumb.attr('id'));
+      }
+      else {
+        $currentThumb.addClass('selected');
       }
     }
   }
+
+  var newImg = $thumb.find('a').attr('href');
+        
+  $thumb.addClass('selected');
+  
+  $mainImage
+    .find('img')
+    .attr('src', newImg);
+
+  $mainImage.data('selectedThumb', newImg);
+  $mainImage.data('selectedThumbId', $thumb.attr('id'));
+
+  return this;
 }
 
 VariantOptions.prototype.onClickOption = function(evt) {
