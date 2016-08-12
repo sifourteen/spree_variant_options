@@ -25,14 +25,12 @@
       <% index += 1 %>
     <% end %>
 
-    <%= hidden_field_tag "products[#{@product.id}]", "", :id => "variant_id", :class => "hidden" %>
+    <%= hidden_field_tag "variant_id", "", :id => "variant_id", :class => "hidden" %>
     <script type="text/javascript">
     //<![CDATA[
-      var variant_options = new VariantOptions({
+      var variantOptions = new VariantOptions({
         options: <%== @product.variant_options_hash.to_json -%>,
-        track_inventory_levels: <%==  !!Spree::Config[:track_inventory_levels] -%>,
-        allow_select_outofstock: <%== !!SpreeVariantOptions::VariantConfig[:allow_select_outofstock] -%>,
-        default_instock: <%== !!SpreeVariantOptions::VariantConfig[:default_instock] -%>,
+        defaultInStock: <%== !!SpreeVariantOptions::VariantConfig[:default_instock] -%>,
         i18n: <%== {:out_of_stock => Spree.t(:out_of_stock), :variant_options_select => Spree.t(:variant_options_select) }.to_json -%>
       });
     //]]>
