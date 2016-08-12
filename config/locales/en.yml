@@ -1,5 +1,6 @@
 en:
   spree:
+    options: Options
     preview: Preview
     attach: Attach
     detach_image: Detach Image
