@@ -47,7 +47,7 @@ function VariantOptions(options) {
   this.selection = [];
   this.lastRowSelected = 0;
 
-  $(document).on('ready', this.init.bind(this));
+  $(document).ready(this.init.bind(this));
 }
 
 VariantOptions.prototype.init = function() {
