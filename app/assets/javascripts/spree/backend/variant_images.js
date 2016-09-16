@@ -12,11 +12,12 @@
 
     $form.on('submit', function(e) {
       var $error = $('#admin-image-form-fields-error'),
+          $master = $('#master-option'),
           $checked = $container.find('#master-option, .option-type, .option-value').filter(':checked');
 
       $error.addClass('hidden');
 
-      if(!$checked.length) {
+      if($master.length && !$checked.length) {
         e.preventDefault();
 
         $error.removeClass('hidden');
